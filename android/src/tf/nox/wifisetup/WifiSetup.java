@@ -13,7 +13,7 @@
  *  limitations under the License.
  */
 
-package nl.nikhef.eduroam;
+package tf.nox.wifisetup;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -53,7 +53,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.bouncycastle.util.encoders.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
-import nl.nikhef.eduroam.R;
+import tf.nox.wifisetup.R;
 
 
 import android.annotation.TargetApi;
@@ -83,7 +83,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.WifiEnterpriseConfig.Eap;
 
-public class WiFiEduroam extends Activity {
+public class WifiSetup extends Activity {
 	// FIXME This should be a configuration setting somehow
 	private static final String CONF_HTTP_URL = "https://aurora.nox.tf/spacenet/android.json";
 	
