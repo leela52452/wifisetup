@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Nikhef eduroam Wifi helper</string>
+	<string name="app_name">CCCamp 2015 Wifi Setup</string>
 
 	<string name="TITLE_LOGON">Please logon</string>
-	<string name="Username">Username</string>
-	<string name="Password">Password</string>
-	<string name="Logon">Log on</string>
-	<string name="WIFI_ENABLE_MSG">Wi-Fi is currently disabled. Do you want to enable it now?</string>
-	<string name="YES">Yes</string>
-	<string name="NO">No</string>	
-	<string name="NA">N/A</string>
-	<string name="BSSID">BSSID</string>
+	<string name="Username">username@realm</string>
+	<string name="Password">password</string>
+	<string name="Logon">Create connection entry</string>
+
+	<string name="c5ghz">This device supports the 5GHz band</string>
+	<string name="l5ghz">(Unfortunately, autodetecting 5GHz support is broken...)</string>
 	
 	
 	<string name="ABOUT_TITLE">About</string>
 	<string name="EXIT_TITLE">Exit</string>
 		
-	<string name="ABOUT_CONTENT">Nikhef eduroam Wifi helper. Small helper application to provision an EAP-TLS certificate on your device, signed using your nikhef credentials.</string>
-	<string name="UNCHANGED">Unchanged</string>
-	<string name="CHANGED">Changed</string>
-	<string name="NIKHEF_LOGO">Nikhef Logo</string>
+	<string name="ABOUT_CONTENT">This small helper app creates a Wifi connection entry for the Chaos Communicatin Camp 2015 network.  It configures the correct SSL CA and subject name match, making it a little more secure than a hand-created entry.</string>
+	<string name="CAMP_LOGO">CCC Camp 2015 Logo</string>
 </resources>

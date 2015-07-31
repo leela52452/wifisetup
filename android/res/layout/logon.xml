@@ -1,89 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	tools:context=".WiFiEduroam"
+	>
+
+<LinearLayout
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    tools:context=".WiFiEduroam"
-    android:background="#fff"
+    android:layout_height="wrap_content"
     android:id="@+id/logonLayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+	android:gravity="center_horizontal|top">
 
 	<ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/NIKHEF_LOGO"
-        android:src="@drawable/nikheflogo"
+        android:id="@+id/logo"
+        android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:scaleType="fitStart"
+        android:contentDescription="@string/CAMP_LOGO"
+        android:src="@drawable/cccamp2015"
         android:padding="20dp" />
 	
-	<TableLayout
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content" >
+	<CheckBox android:id="@+id/check5g"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="15dp"
+		android:text="@string/c5ghz"/>
+	<TextView
+		android:id="@+id/label5g"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/l5ghz"/>
 
-		<TableRow
-	        android:id="@+id/tableRow1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" >
-	
-	        <TextView
-	            android:id="@+id/username_label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/Username"
-	            android:textColor="#000" />
-	
-	        <EditText
-	            android:id="@+id/username"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:ems="10"
-	            android:inputType="text"
-	            android:padding="5dp"
-	            android:textColor="#000"
-	            android:textCursorDrawable="@null"
-	            android:background="@drawable/rectangle">
-	
-	            <requestFocus />
-	        </EditText>
-	    </TableRow>
-	
-	    <TableRow
-	        android:id="@+id/tableRow2"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" >
-	
-	        <TextView
-	            android:id="@+id/password_label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/Password"
-	            android:textColor="#000000" />
-	
-	        <EditText
-	            android:id="@+id/password"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:ems="10"
-	            android:inputType="textPassword"
-	            android:padding="5dp"
-	            android:textColor="#000"
-	            android:textCursorDrawable="@null"
-	            android:background="@drawable/rectangle"
-	             />
-	
-	    </TableRow>
-	
-	    <TableRow
-	        android:id="@+id/tableRow3"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="center_vertical|center_horizontal" >
-	
-	        <Button
-	            android:id="@+id/button1"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/Logon" />
-	    </TableRow>
-	</TableLayout>
+	<LinearLayout
+		android:id="@+id/logindata"
+	    android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:gravity="center_horizontal|top"
+		android:visibility="gone">
+
+        <EditText
+			android:id="@+id/username"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:ems="10"
+			android:inputType="textEmailAddress"
+			android:padding="5dp"
+			android:layout_marginTop="15dp"
+			android:hint="@string/Username"
+			>
+			<requestFocus />
+		</EditText>
+
+		<EditText
+			android:id="@+id/password"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:ems="10"
+			android:inputType="textPassword"
+			android:padding="5dp"
+			android:layout_marginTop="5dp"
+			android:hint="@string/Password"
+			/>
+	</LinearLayout>
+
+	<Button
+		android:id="@+id/button1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/Logon"
+		android:layout_margin="15dp"/>
+
+	<Space
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		/>
 </LinearLayout>
+</ScrollView>
