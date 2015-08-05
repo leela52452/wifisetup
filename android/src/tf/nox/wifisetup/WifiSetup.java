@@ -50,7 +50,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.bouncycastle.util.encoders.Base64;
+/* import android.util.Base64; */
 import org.json.JSONException;
 import org.json.JSONObject;
 import tf.nox.wifisetup.R;
@@ -76,8 +76,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.CheckBox;
 
 // API level 18 and up
 import android.net.wifi.WifiEnterpriseConfig;
@@ -85,8 +86,6 @@ import android.net.wifi.WifiEnterpriseConfig.Eap;
 
 public class WifiSetup extends Activity {
 	// FIXME This should be a configuration setting somehow
-	private static final String CONF_HTTP_URL = "https://aurora.nox.tf/spacenet/android.json";
-	
 	private static final String INT_EAP = "eap";
 	private static final String INT_PHASE2 = "phase2";
 	private static final String INT_ENGINE = "engine";
@@ -112,55 +111,104 @@ public class WifiSetup extends Activity {
     private Handler mHandler = new Handler();
 	private EditText username;
 	private EditText password;
-	private String ca;
-	private String ca_name;
-	private String client_cert_name;
+	private CheckBox check5g;
+	private Button btn;
 	private String subject_match;
 	private String realm;
 	private String ssid;
 	private boolean busy = false;
 	private Toast toast = null;
-	
+	private int logoclicks = 0;
+	private String s_username;
+	private String s_password;
+
+
+	private void toastText(final String text) {
+		if (toast != null)
+			toast.cancel();
+		toast = Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT);
+		toast.show();
+	}
+
+	/*
+	 * Unfortunately, this returns false on a LOT of devices :(
+	 *
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private boolean get5G() {
+		WifiManager wifiManager = (WifiManager) this.getSystemService(WIFI_SERVICE);
+		return wifiManager.is5GHzBandSupported();
+	}
+	*/
+
 	// Called when the activity is first created.
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);  
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.logon);
-		
+
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
-		
-		Button myButton = (Button) findViewById(R.id.button1);
-		if (myButton == null)
+
+		check5g = (CheckBox) findViewById(R.id.check5g);
+		check5g.setChecked(true);
+		/*
+		TextView label5g = (TextView) findViewById(R.id.label5g);
+		if (android.os.Build.VERSION.SDK_INT >= 21) {
+			check5g.setChecked(get5G());
+			label5g.setText("(autodetected value)");
+		} else {
+			check5g.setChecked(true);
+			label5g.setText("(Android 5.0 is needed to autodetect this)");
+		}
+		*/
+
+		ImageView img = (ImageView) findViewById(R.id.logo);
+		img.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				logoclicks++;
+				if (logoclicks == 4) {
+					toastText("You're cute!");
+				}
+				if (logoclicks == 6) {
+					toastText("Stop that!");
+				}
+				if (logoclicks == 7) {
+					View logindata = findViewById(R.id.logindata);
+					logindata.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+
+		btn = (Button) findViewById(R.id.button1);
+		if (btn == null)
 			throw new RuntimeException("button1 not found. Odd");
-		
-		
-		myButton.setOnClickListener(new Button.OnClickListener() {
+		btn.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View _v) {
 				if (busy) {
 					return;
 				}
 				busy = true;
+				_v.setClickable(false);
+
 				// Most of this stuff runs in the background
 				Thread t = new Thread() {
 					@Override
 					public void run() {
 						try {
-							updateStatus("Grabbing JSON info from server...");
-							postData(username.getText().toString(), password.getText().toString());
-							
 							updateStatus("Installing WiFi profile...");
 							if (android.os.Build.VERSION.SDK_INT >= 18) {
 								saveWifiConfig();
 								updateStatus("All done!");
 								// Clear the password field in the UI thread
+								/*
 								mHandler.post(new Runnable() {
 									@Override
 									public void run() {
 										password.setText("");
 									};
 								});
-
+								*/
 							} else {
 								throw new RuntimeException("What version is this?! API Mismatch");
 							}
@@ -171,6 +219,12 @@ public class WifiSetup extends Activity {
 							e.printStackTrace();
 						}
 						busy = false;
+						mHandler.post(new Runnable() {
+							@Override
+							public void run() {
+								btn.setClickable(true);
+							};
+						});
 					}
 				};
 				t.start();
@@ -183,9 +237,9 @@ public class WifiSetup extends Activity {
 	private void saveWifiConfig() {
 		WifiManager wifiManager = (WifiManager) this.getSystemService(WIFI_SERVICE);
 		wifiManager.setWifiEnabled(true);
-		
+
 		WifiConfiguration currentConfig = new WifiConfiguration();
-		
+
 		List<WifiConfiguration> configs = null;
 		for (int i = 0; i < 10 && configs == null; i++) {
 			configs = wifiManager.getConfiguredNetworks();
@@ -193,9 +247,30 @@ public class WifiSetup extends Activity {
 				Thread.sleep(1);
 			}
 			catch(InterruptedException e) {
-				continue;			
+				continue;
 			}
 		}
+
+		if (check5g.isChecked()) {
+			ssid = "Camp2015";
+		} else {
+			ssid = "Camp2015-legacy";
+		}
+		subject_match = "/description=PJT57Mnq7X1ULcT1/C=DE/CN=radius.c3noc.net/emailAddress=postmaster@c3noc.net";
+
+		s_username = username.getText().toString();
+		s_password = password.getText().toString();
+		realm = "";
+		if (s_username.equals("") && s_password.equals("")) {
+			s_username = "droid2015";
+			s_password = "droid2015";
+		} else {
+			if (s_username.indexOf("@") >= 0) {
+				int idx = s_username.indexOf("@");
+				realm = s_username.substring(idx);
+			}
+		}
+
 
 		// Use the existing eduroam profile if it exists.
 		boolean ssidExists = false;
@@ -240,19 +315,15 @@ public class WifiSetup extends Activity {
 		HashMap<String,String> configMap = new HashMap<String,String>();
 		configMap.put(INT_SUBJECT_MATCH, subject_match);
 		configMap.put(INT_ANONYMOUS_IDENTITY, "anonymous" + realm);
-		configMap.put(INT_IDENTITY, username.getText().toString());
-		configMap.put(INT_PASSWORD, password.getText().toString());
+		configMap.put(INT_IDENTITY, s_username);
+		configMap.put(INT_PASSWORD, s_password);
 		configMap.put(INT_EAP, "TTLS");
 		configMap.put(INT_PHASE2, "auth=PAP");
 		configMap.put(INT_ENGINE, "0");
-		configMap.put(INT_CA_CERT, INT_CA_PREFIX + ca_name);
+		// configMap.put(INT_CA_CERT, INT_CA_PREFIX + ca_name);
 
-		if (android.os.Build.VERSION.SDK_INT >= 18) {
-			applyAndroid43EnterpriseSettings(currentConfig, configMap);
-		} else {
-			throw new RuntimeException("API version mismatch!");
-		}
-		
+		applyAndroid43EnterpriseSettings(currentConfig, configMap);
+
 		if (!ssidExists) {
 			int networkId = wifiManager.addNetwork(currentConfig);
 			wifiManager.enableNetwork(networkId, false);
@@ -269,7 +340,8 @@ public class WifiSetup extends Activity {
 	private void applyAndroid43EnterpriseSettings(WifiConfiguration currentConfig, HashMap<String,String> configMap) {
 		try {
 			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			InputStream in = new ByteArrayInputStream(Base64.decode(ca.replaceAll("-----(BEGIN|END) CERTIFICATE-----", "")));
+			InputStream in = getResources().openRawResource(R.raw.cacert);
+			// InputStream in = new ByteArrayInputStream(Base64.decode(ca.replaceAll("-----(BEGIN|END) CERTIFICATE-----", ""), 0));
 			X509Certificate caCert = (X509Certificate) certFactory.generateCertificate(in);
 		
 			WifiEnterpriseConfig enterpriseConfig = new WifiEnterpriseConfig();
@@ -321,68 +393,6 @@ public class WifiSetup extends Activity {
 	    return false;
 	}
 
-	
-	
-	// This function does the HTTP POST request for provisioning and parses the JSON response
-		private void postData(String username, String password) throws RuntimeException {
-		    // Create a new HttpClient and Post Header
-		    HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost(CONF_HTTP_URL);
-
-
-		    String android_id = Secure.getString(getBaseContext().getContentResolver(),
-		                                                            Secure.ANDROID_ID);
-		    
-		    
-		    try {
-		        // Add the post data
-		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		        nameValuePairs.add(new BasicNameValuePair("username", username));
-		        nameValuePairs.add(new BasicNameValuePair("password", password));
-		        nameValuePairs.add(new BasicNameValuePair("device_id", android_id));
-		        nameValuePairs.add(new BasicNameValuePair("device_serial", android.os.Build.SERIAL));
-		        nameValuePairs.add(new BasicNameValuePair("device_description", android.os.Build.MANUFACTURER + " " + 
-		                                                                        android.os.Build.MODEL + " / " +
-		        		                                                        android.os.Build.PRODUCT));
-		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-		        // Execute HTTP POST request synchronously
-		        HttpResponse response = httpclient.execute(httppost);
-		        if (!response.getStatusLine().toString().endsWith("200 OK")) {
-		        	updateStatus("HTTP Error: " + response.getStatusLine());
-		        }
-		     
-		        // Convert input to JSON object
-		        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-		        StringBuilder builder = new StringBuilder();
-		        for (String line = null; (line = reader.readLine()) != null;) {
-		            builder.append(line).append("\n");
-		        }
-		        String json = builder.toString();
-		        JSONObject obj = new JSONObject(json);
-		        
-	            if (!obj.getString("status").equals("ok")) {
-	            	updateStatus("JSON Status Error: " + obj.getString("error"));
-	            	throw new RuntimeException(obj.getString("error"));
-	            }
-	            // Grab the information
-	            ca = obj.getString("ca");
-	            ca_name = obj.getString("ca_name");
-	            realm = obj.getString("realm");
-	            subject_match = obj.getString("subject_match");
-	            ssid = obj.getString("ssid");
-		    } catch (ClientProtocolException e) {
-				e.printStackTrace();
-		    } catch (UnknownHostException e) {
-				e.printStackTrace();
-				throw new RuntimeException("Please check your connection!");
-		    } catch (IOException e) {
-				e.printStackTrace();
-		    } catch (JSONException e) {
-		    	throw new RuntimeException("JSON: " + e.getMessage());
-		    }
-		} 
-		
 	
 	
 	/* Update the status in the main thread */
