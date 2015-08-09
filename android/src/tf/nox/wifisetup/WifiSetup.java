@@ -351,8 +351,8 @@ public class WifiSetup extends Activity {
 			enterpriseConfig.setEapMethod(Eap.TTLS);
 	
 			enterpriseConfig.setCaCertificate(caCert);
-			enterpriseConfig.setIdentity(username.getText().toString());
-			enterpriseConfig.setPassword(password.getText().toString());
+			enterpriseConfig.setIdentity(s_username);
+			enterpriseConfig.setPassword(s_password);
 			enterpriseConfig.setSubjectMatch(configMap.get(INT_SUBJECT_MATCH));
 			currentConfig.enterpriseConfig = enterpriseConfig;
 			
