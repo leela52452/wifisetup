@@ -79,6 +79,7 @@ import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.CheckBox;
+import android.widget.ViewFlipper;
 
 // API level 18 and up
 import android.net.wifi.WifiEnterpriseConfig;
@@ -121,7 +122,7 @@ public class WifiSetup extends Activity {
 	private int logoclicks = 0;
 	private String s_username;
 	private String s_password;
-
+	private ViewFlipper flipper;
 
 	private void toastText(final String text) {
 		if (toast != null)
@@ -146,6 +147,7 @@ public class WifiSetup extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.logon);
 
+		flipper = (ViewFlipper) findViewById(R.id.viewflipper);
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
 
@@ -196,10 +198,9 @@ public class WifiSetup extends Activity {
 					@Override
 					public void run() {
 						try {
-							updateStatus("Installing WiFi profile...");
 							if (android.os.Build.VERSION.SDK_INT >= 18) {
 								saveWifiConfig();
-								updateStatus("All done!");
+								resultStatus(true, "You should now have a wifi connection entry with correct security settings and certificate verification.\n\nMake sure to actually use it!");
 								// Clear the password field in the UI thread
 								/*
 								mHandler.post(new Runnable() {
@@ -213,7 +214,7 @@ public class WifiSetup extends Activity {
 								throw new RuntimeException("What version is this?! API Mismatch");
 							}
 						} catch (RuntimeException e) {
-							updateStatus("Runtime Error: " + e.getMessage());
+							resultStatus(false, "Something went wrong: " + e.getMessage());
 							e.printStackTrace();
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -396,15 +397,25 @@ public class WifiSetup extends Activity {
 	
 	
 	/* Update the status in the main thread */
-	protected void updateStatus(final String text) {
+	protected void resultStatus(final boolean success, final String text) {
 		mHandler.post(new Runnable() {
 			@Override
 			public void run() {
+				TextView res_title = (TextView) findViewById(R.id.resulttitle);
+				TextView res_text = (TextView) findViewById(R.id.result);
+
 				System.out.println(text);
+				res_text.setText(text);
+				if (success)
+					res_title.setText("Success!");
+				else
+					res_title.setText("ERROR!");
+
 				if (toast != null)
 					toast.cancel();
-				toast = Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG);
-				toast.show();
+				/* toast = Toast.makeText(getBaseContext(), text, Toast.LENGTH_LONG);
+				toast.show(); */
+				flipper.showNext();
 			};
 		});
 	}

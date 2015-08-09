@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".WiFiEduroam"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	tools:context=".WiFiEduroam"
+	android:id="@+id/viewflipper"
+	>
+<ScrollView
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:id="@+id/FirstView"
 	>
 
 <LinearLayout
@@ -20,8 +27,15 @@
 		android:scaleType="fitStart"
         android:contentDescription="@string/CAMP_LOGO"
         android:src="@drawable/cccamp2015"
-        android:padding="20dp" />
-	
+		android:padding="20dp" />
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:autoLink="web"
+		android:layout_marginTop="15dp"
+		android:text="@string/twitter"/>
+
 	<CheckBox android:id="@+id/check5g"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -79,3 +93,28 @@
 		/>
 </LinearLayout>
 </ScrollView>
+
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:id="@+id/logonLayout"
+			android:orientation="vertical"
+			android:gravity="center"
+			>
+			<TextView
+				android:id="@+id/resulttitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="15dp"
+				android:textAlignment="center"
+				android:textSize="24dp"
+				/>
+			<TextView
+				android:id="@+id/result"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="15dp"
+				android:textAlignment="center"
+				/>
+		</LinearLayout>
+</ViewFlipper>
