@@ -253,18 +253,18 @@ public class WifiSetup extends Activity {
 		}
 
 		if (check5g.isChecked()) {
-			ssid = "Camp2015";
+			ssid = "32C3";
 		} else {
-			ssid = "Camp2015-legacy";
+			ssid = "32C3-legacy";
 		}
-		subject_match = "/description=PJT57Mnq7X1ULcT1/C=DE/CN=radius.c3noc.net/emailAddress=postmaster@c3noc.net";
+		subject_match = "/C=DE/CN=radius.c3noc.net/emailAddress=alex@leefmann.com";
 
 		s_username = username.getText().toString();
 		s_password = password.getText().toString();
 		realm = "";
 		if (s_username.equals("") && s_password.equals("")) {
-			s_username = "droid2015";
-			s_password = "droid2015";
+			s_username = "droid32c3";
+			s_password = "droid32c3";
 		} else {
 			if (s_username.indexOf("@") >= 0) {
 				int idx = s_username.indexOf("@");

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">CCCamp 2015 Wifi Setup</string>
+	<string name="app_name">32C3 Wifi Setup</string>
 
 	<string name="TITLE_LOGON">Please logon</string>
 	<string name="Username">username@realm</string>
@@ -11,11 +11,12 @@
 
 	<string name="c5ghz">This device supports the 5GHz band</string>
 	<string name="l5ghz">(Unfortunately, autodetecting 5GHz support is broken...)</string>
+	<string name="lkeystore">Note: if you have no screen lock, Android refuses to store the security settings!</string>
 	
 	
 	<string name="ABOUT_TITLE">About</string>
 	<string name="EXIT_TITLE">Exit</string>
 		
-	<string name="ABOUT_CONTENT">This small helper app creates a Wifi connection entry for the Chaos Communicatin Camp 2015 network.  It configures the correct SSL CA and subject name match, making it a little more secure than a hand-created entry.</string>
-	<string name="CAMP_LOGO">CCC Camp 2015 Logo</string>
+	<string name="ABOUT_CONTENT">This small helper app creates a Wifi connection entry for the 32nd Chaos Communication Congress network.  It configures the correct SSL CA and subject name match, making it a little more secure than a hand-created entry.</string>
+	<string name="C32C3_LOGO">32nd Chaos Communication Congress Logo</string>
 </resources>

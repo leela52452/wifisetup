@@ -24,9 +24,9 @@
         android:id="@+id/logo"
         android:layout_width="fill_parent"
 		android:layout_height="200dp"
-		android:scaleType="fitStart"
-        android:contentDescription="@string/CAMP_LOGO"
-        android:src="@drawable/cccamp2015"
+		android:scaleType="fitCenter"
+        android:contentDescription="@string/C32C3_LOGO"
+        android:src="@drawable/droid32c3"
 		android:padding="20dp" />
 
 	<TextView
@@ -45,7 +45,19 @@
 		android:id="@+id/label5g"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:textAlignment="center"
 		android:text="@string/l5ghz"/>
+	<TextView
+		android:layout_marginTop="5dp"
+		android:id="@+id/labelkeystore"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:textAlignment="center"
+		android:text="@string/lkeystore"/>
 
 	<LinearLayout
 		android:id="@+id/logindata"
