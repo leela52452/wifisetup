@@ -256,11 +256,11 @@ public class WifiSetup extends Activity {
 		}
 
 		if (check5g.isChecked()) {
-			ssid = "emfcamp";
+			ssid = "33C3";
 		} else {
-			ssid = "emfcamp-legacy";
+			ssid = "33C3-legacy";
 		}
-		subject_match = "/C=GB/CN=radius.c3noc.net";
+		subject_match = "/CN=radius.c3noc.net";
 		altsubject_match = "DNS:radius.c3noc.net";
 
 		s_username = username.getText().toString();
