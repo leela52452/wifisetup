@@ -96,6 +96,7 @@ public class WifiSetup extends Activity {
 	private static final String INT_PRIVATE_KEY = "private_key";
 	private static final String INT_PRIVATE_KEY_ID = "key_id";
 	private static final String INT_SUBJECT_MATCH = "subject_match";
+	private static final String INT_ALTSUBJECT_MATCH = "altsubject_match";
 	private static final String INT_PASSWORD = "password";
 	private static final String INT_IDENTITY = "identity";
 	private static final String INT_ANONYMOUS_IDENTITY = "anonymous_identity";
@@ -115,6 +116,8 @@ public class WifiSetup extends Activity {
 	private CheckBox check5g;
 	private Button btn;
 	private String subject_match;
+	private String altsubject_match;
+
 	private String realm;
 	private String ssid;
 	private boolean busy = false;
@@ -253,18 +256,19 @@ public class WifiSetup extends Activity {
 		}
 
 		if (check5g.isChecked()) {
-			ssid = "emfcamp";
+			ssid = "33C3";
 		} else {
-			ssid = "emfcamp-legacy";
+			ssid = "33C3-legacy";
 		}
-		subject_match = "/C=GB/CN=radius.emf.camp";
+		subject_match = "/CN=radius.c3noc.net";
+		altsubject_match = "DNS:radius.c3noc.net";
 
 		s_username = username.getText().toString();
 		s_password = password.getText().toString();
 		realm = "";
 		if (s_username.equals("") && s_password.equals("")) {
-			s_username = "emfdroid";
-			s_password = "emfdroid";
+			s_username = "33c3";
+			s_password = "33c3";
 		} else {
 			if (s_username.indexOf("@") >= 0) {
 				int idx = s_username.indexOf("@");
@@ -315,6 +319,7 @@ public class WifiSetup extends Activity {
 		// Enterprise Settings
 		HashMap<String,String> configMap = new HashMap<String,String>();
 		configMap.put(INT_SUBJECT_MATCH, subject_match);
+		configMap.put(INT_ALTSUBJECT_MATCH, altsubject_match);
 		configMap.put(INT_ANONYMOUS_IDENTITY, "anonymous" + realm);
 		configMap.put(INT_IDENTITY, s_username);
 		configMap.put(INT_PASSWORD, s_password);
