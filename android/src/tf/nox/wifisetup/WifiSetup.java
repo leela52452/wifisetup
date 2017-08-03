@@ -1,4 +1,4 @@
-/* Copyright 2013 Wilco Baan Hofman <wilco@baanhofman.nl>
+/* Copyright 2013-2017 Wilco Baan Hofman <wilco@baanhofman.nl>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -239,7 +239,7 @@ public class WifiSetup extends Activity {
 	}
 
 	private void saveWifiConfig() {
-		WifiManager wifiManager = (WifiManager) this.getSystemService(WIFI_SERVICE);
+		WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(WIFI_SERVICE);
 		wifiManager.setWifiEnabled(true);
 
 		WifiConfiguration currentConfig = new WifiConfiguration();
@@ -256,9 +256,9 @@ public class WifiSetup extends Activity {
 		}
 
 		if (check5g.isChecked()) {
-			ssid = "33C3";
+			ssid = "34C3";
 		} else {
-			ssid = "33C3-legacy";
+			ssid = "34C3-legacy";
 		}
 		subject_match = "/CN=radius.c3noc.net";
 		altsubject_match = "DNS:radius.c3noc.net";
@@ -267,8 +267,8 @@ public class WifiSetup extends Activity {
 		s_password = password.getText().toString();
 		realm = "";
 		if (s_username.equals("") && s_password.equals("")) {
-			s_username = "33c3";
-			s_password = "33c3";
+			s_username = "34c3";
+			s_password = "34c3";
 		} else {
 			if (s_username.indexOf("@") >= 0) {
 				int idx = s_username.indexOf("@");
